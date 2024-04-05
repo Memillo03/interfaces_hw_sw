@@ -39,9 +39,11 @@ def print_welcome_message():
 
 
 # URL de ejemplo para la API
-api_url = "https://api.example.com/data"
-data = fetch_data_from_api(api_url)
-data_processor = DataProcessor(data)
-filtered_data = data_processor.filter_data("especial")
-save_data_to_file("/mnt/data/filtered_data.json", filtered_data)
-print_welcome_message()
+if __name__ == "__main__":
+    """Inicializa la clase con los datos proporcionados."""
+    api_url = "https://api.example.com/data"
+    data = fetch_data_from_api(api_url)
+    data_processor = DataProcessor(data)
+    filtered_data = data_processor.filter_data("especial")
+    save_data_to_file("/mnt/data/filtered_data.json", filtered_data)
+    print_welcome_message()
