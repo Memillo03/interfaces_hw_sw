@@ -1,1 +1,2 @@
 *.exe
+/filters/__pycache__
