@@ -1,6 +1,7 @@
 """Filtering audio signal using Fourier Transform."""
 
-# Libraries
+from pathlib import Path
+
 import matplotlib.pyplot as plt
 import numpy as np
 from playsound import playsound
@@ -10,10 +11,11 @@ from scipy.io import wavfile
 def audio_filter():
     """Filtering audio signal using Fourier Transform."""
     # Play audio
-    playsound("MB_song.wav")
+    # playsound("MB_song.wav")
 
     # Read audio file
     sampFreq, sound = wavfile.read("MB_song.wav")
+    print(sound.shape)
     print(sound.dtype, sampFreq)
 
     # Normalice audio to b between - 1 to 1
@@ -78,13 +80,21 @@ def audio_filter():
     plt.tight_layout
     plt.show()
 
-    file_path1 = r"C:\Users\Guilermo\Documents\inter_hw_sw\filters\noisy_audio.wav"
-    file_path_2 = r"C:\Users\Guilermo\Documents\inter_hw_sw\filters\noiseless_audio.wav"
+    script_dir = Path(__file__).parent
+    file_path1 = script_dir / "noisy_audio.wav"
+    file_path_2 = script_dir / "noiseless_audio.wav"
 
-    wavfile.write(file_path1, sampFreq, signal)
-    wavfile.write(file_path_2, sampFreq, noiseless_signal)
+    # m = np.max(np.abs(signal))
+    # sigf32 = (signal/m).astype(np.int32)
+    data = np.int16(signal * 32767 / np.max(np.abs(signal)))
+    wavfile.write(str(file_path1), sampFreq, data)
+
+    # m = np.max(np.abs(noiseless_signal))
+    # sigf32 = (noiseless_signal/m).astype(np.int32)
+    data = np.int16(noiseless_signal * 32767 / np.max(np.abs(noiseless_signal)))
+    wavfile.write(str(file_path_2), sampFreq, data)
     playsound("noisy_audio.wav")
-    playsound("noiseless_audio.wav")
+    # playsound("noiseless_audio.wav")
 
 
 if __name__ == "__main__":
