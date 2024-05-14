@@ -2,7 +2,6 @@
 
 from pathlib import Path
 
-import matplotlib.pyplot as plt
 import numpy as np
 from pydub import AudioSegment
 from scipy.fft import fft
@@ -31,10 +30,8 @@ class AudioSignal:
         else:
             print("Invalid file format")
             return
-
-        if (
-            len(self.signal.shape) > 1 and self.signal.shape[1] > 1
-        ):  # if stereo, convert to mono
+        # if stereo, convert to mono
+        if len(self.signal.shape) > 1 and self.signal.shape[1] > 1:
             self.signal = self.signal[:, 0]  # only one channel
 
         self.normSignal = self.signal / 2.0**15
@@ -43,7 +40,7 @@ class AudioSignal:
         self.processedSignal = np.zeros(self.signal.shape)
 
     def get_signal(self, signal):
-        """Plot original audio signal."""
+        """Get values of original signal."""
         time_vector = np.linspace(0, self.duration, self.nSamples)
         if signal == "original":
             return time_vector, self.normSignal
@@ -127,17 +124,6 @@ class AudioSignal:
         # freq = fftfreq(len(ft), 1/self.sampFreq)
         # ft = fftshift(ft)
         return freq[: len(freq) // 2], ft[: len(ft) // 2]
-
-    def plot_fft(self, sig):
-        """Plot the Fourier Transform of the signal."""
-        freq, ft = self.fourier_transform(sig)
-        freq = freq[: len(freq) // 2]
-        ft = ft[: len(ft) // 2]
-
-        plt.plot(freq, np.abs(ft))
-        plt.xlabel("Frequency [Hz]")
-        plt.ylabel("Amplitude")
-        plt.show()
 
     def save_signal(self, file_path, file_name, format):
         """Save the processed signal to a file."""
